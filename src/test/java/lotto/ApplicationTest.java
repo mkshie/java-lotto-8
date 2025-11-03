@@ -1,6 +1,7 @@
 package lotto;
 
 import camp.nextstep.edu.missionutils.test.NsTest;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -52,6 +53,82 @@ class ApplicationTest extends NsTest {
             runException("1000j");
             assertThat(output()).contains(ERROR_MESSAGE);
         });
+    }
+
+    @DisplayName("구입금액 잘못 입력 → [ERROR] 출력 후 같은 단계 재입력")
+    @Test
+    void 구입금액_재입력_시나리오() {
+        assertSimpleTest(() -> {
+            run(
+                    "abc",     // 숫자 아님
+                    "-1000",   // 음수
+                    "1500",    // 1000단위 아님
+                    "8000",
+                    "1,2,3,4,5,6",
+                    "7"
+            );
+            String out = output();
+            assertThat(out).contains(ERROR_MESSAGE);
+            assertThat(out).contains("8개를 구매했습니다.");
+            assertThat(out).contains("당첨 통계");
+        });
+    }
+
+    @DisplayName("당첨번호 잘못 입력(개수/범위/중복) → [ERROR] 후 같은 단계 재입력")
+    @Test
+    void 당첨번호_재입력_시나리오() {
+        assertSimpleTest(() -> {
+            run(
+                    "8000",
+                    "1,2,3",         // 개수 부족
+                    "1,2,3,4,5,46",  // 범위 초과
+                    "1,1,2,3,4,5",   // 중복
+                    "1,2,3,4,5,6",
+                    "7"
+            );
+            String out = output();
+            assertThat(out).contains(ERROR_MESSAGE);
+            assertThat(out).contains("8개를 구매했습니다.");
+            assertThat(out).contains("당첨 통계");
+        });
+    }
+
+    @DisplayName("보너스 번호 잘못 입력(문자/범위/중복) → [ERROR] 후 같은 단계 재입력")
+    @Test
+    void 보너스번호_재입력_시나리오() {
+        assertSimpleTest(() -> {
+            run(
+                    "8000",
+                    "1,2,3,4,5,6",
+                    "abc",
+                    "0",
+                    "6",
+                    "7"
+            );
+            String out = output();
+            assertThat(out).contains(ERROR_MESSAGE);
+            assertThat(out).contains("당첨 통계");
+        });
+    }
+
+    @DisplayName("1등 당첨 시 수익률 출력은 과학적 표기(E 표기) 없이 인쇄되어야 한다")
+    @Test
+    void 수익률_과학적표기_방지() {
+        assertRandomUniqueNumbersInRangeTest(
+                () -> {
+                    run(
+                            "1000",
+                            "1,2,3,4,5,6",
+                            "7"
+                    );
+                    String out = output();
+                    assertThat(out).contains("1개를 구매했습니다.");
+                    assertThat(out).contains("당첨 통계");
+                    assertThat(out).doesNotContain("E");
+                    assertThat(out).contains("%");
+                },
+                List.of(1, 2, 3, 4, 5, 6)
+        );
     }
 
     @Override
