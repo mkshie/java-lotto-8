@@ -4,6 +4,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import lotto.domain.Lotto;
 import lotto.domain.Rank;
@@ -40,7 +41,8 @@ public class OutputView {
         printlnStat("6개 일치", 2_000_000_000L, c.getOrDefault(Rank.FIRST, 0));
 
         double yieldPercent = lottoResult.getYieldPercent(purchaseMoney);
-        System.out.println("총 수익률은 " + yieldPercent + "%입니다.");
+        String PercentText = String.format(Locale.US, "%.2f", yieldPercent);
+        System.out.println("총 수익률은 " + PercentText + "%입니다.");
     }
 
     private void printlnStat(String label, long money, int count) {
