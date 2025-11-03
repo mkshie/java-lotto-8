@@ -17,6 +17,8 @@ public enum ErrorMessageEnum {
     BONUS_OUT_OF_RANGE("보너스 번호는 1부터 45 사이여야 합니다."),
     BONUS_DUPLICATED("보너스 번호는 당첨 번호와 중복될 수 없습니다."),
 
+    LOTTO_DUPLICATED("로또 번호에 중복이 존재합니다."),
+
     NUMBER_OUT_OF_RANGE("번호는 1부터 45 사이여야 합니다."),
     ;
     private static final String PREFIX = "[ERROR] ";
