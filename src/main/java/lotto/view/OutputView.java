@@ -1,5 +1,6 @@
 package lotto.view;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,7 +42,7 @@ public class OutputView {
         printlnStat("6개 일치", 2_000_000_000L, c.getOrDefault(Rank.FIRST, 0));
 
         double yieldPercent = lottoResult.getYieldPercent(purchaseMoney);
-        String PercentText = String.format(Locale.US, "%.2f", yieldPercent);
+        String PercentText = BigDecimal.valueOf(yieldPercent).stripTrailingZeros().toPlainString();
         System.out.println("총 수익률은 " + PercentText + "%입니다.");
     }
 
