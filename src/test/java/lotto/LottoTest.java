@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
 
 class LottoTest {
     @Test
@@ -22,5 +23,10 @@ class LottoTest {
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
-    // TODO: 추가 기능 구현에 따른 테스트 코드 작성
+    @DisplayName("정상 입력이면 생성된다")
+    @Test
+    void valid_ticket_ok() {
+        assertThatCode(() -> new Lotto(List.of(1, 2, 3, 4, 5, 6)))
+                .doesNotThrowAnyException();
+    }
 }
